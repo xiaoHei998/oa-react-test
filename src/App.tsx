@@ -4,6 +4,8 @@ import { Axios } from "./utils/request";
 import { useEffect } from "react";
 function App() {
   const onSignIn = async function () {
+    console.log("onSignIn");
+    //模拟登录
     try {
       const { data } = await Axios.post("/sign-in", {
         username: "dev",

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-
+import { useTranslation } from "react-i18next";
 const Text = () => {
   console.log("Text--updated");
-  return <div>Text</div>;
+  const { t } = useTranslation();
+
+  return <div>{t('test.name')}</div>;
 };
 const Father = ({ children }: { children: React.ReactNode }) => {
   console.log("About--updated");
@@ -15,10 +17,12 @@ const Father = ({ children }: { children: React.ReactNode }) => {
   );
 };
 const About: React.FC = () => {
+  const { t, i18n } = useTranslation();
   return (
     <div>
-      <h1>About Page</h1>
-      <p>This is the About page. </p>
+      <h1>{t("key")}</h1>
+      <h1 onClick={() => {i18n.changeLanguage('en')}}>About Page</h1>
+      <p onClick={() => {i18n.changeLanguage('zh')}}>This is the About page. </p>
 
       <Father>
         <Text />

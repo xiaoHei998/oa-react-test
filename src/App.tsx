@@ -2,6 +2,9 @@ import { CurrentTimezoneProvider } from "./context/currentTimezoneContext";
 import AppRouter from "./router";
 import { Axios } from "./utils/request";
 import { useEffect } from "react";
+// import './i18n/index.ts'; // Ensure i18n is initialized
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
 function App() {
   const onSignIn = async function () {
     console.log("onSignIn");
@@ -22,7 +25,7 @@ function App() {
         })
       );
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
   };
 
@@ -38,9 +41,11 @@ function App() {
 
   return (
     <>
-      <CurrentTimezoneProvider initalTimezone={initalTimezone}>
-        <AppRouter />
-      </CurrentTimezoneProvider>
+      <I18nextProvider i18n={i18n} defaultNS={'translation'}>
+        <CurrentTimezoneProvider initalTimezone={initalTimezone}>
+          <AppRouter />
+        </CurrentTimezoneProvider>
+      </I18nextProvider>
     </>
   );
 }

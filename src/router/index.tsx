@@ -1,10 +1,17 @@
-import React, { lazy, Suspense } from 'react';
-import { useRoutes } from 'react-router-dom';
+import React, { lazy, Suspense } from "react";
+import { useRoutes } from "react-router-dom";
+import TestLogin from "@/pages/test-login/TestLogin";
+import Dashboard from "@/pages/Dashboard";
+import Guard from "./permission-guard";
+import NotFound from "@/pages/404";
+import { permissionRoutes } from "./permission-router";
 // import { useCurrentTimezone } from '../context/currentTimezoneContext';
 
 // 通用懒加载包装
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function lazyLoad(importFn: () => Promise<{ default: React.ComponentType<any> }>): React.ReactNode {
+function lazyLoad(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  importFn: () => Promise<{ default: React.ComponentType<any> }>
+): React.ReactNode {
   const Component = lazy(importFn);
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -13,36 +20,44 @@ function lazyLoad(importFn: () => Promise<{ default: React.ComponentType<any> }>
   );
 }
 
-const routes = [
+export const routes = [
   {
-    path: '/',
-    element: lazyLoad(() => import('../pages/Home')),
+    path: "/login",
+    element: <TestLogin />,
+    meta: {
+      title: "Login",
+    },
   },
   {
-    path: '/about',
-    element: lazyLoad(() => import('../pages/About')),
+    path: "/",
+    element: (
+      <Guard>
+        <Dashboard />
+      </Guard>
+    ),
+    meta: {
+      title: "Dashboard",
+    },
+    children: [
+      ...permissionRoutes.map((route) => {
+        return {
+          ...route,
+          element: lazyLoad(route.element),
+        };
+      }),
+    ],
   },
   {
-    path: '/dashboard',
-    element: lazyLoad(() => import('../pages/Dashboard')),
-    // children: [
-    //   {
-    //     path: 'profile',
-    //     element: lazyLoad(() => import('../pages/Profile')),
-    //   },
-    //   {
-    //     path: 'settings',
-    //     element: lazyLoad(() => import('../pages/Settings')),
-    //   },
-    // ],
+    path: "*",
+    element: <NotFound />,
   },
 ];
 
 const AppRouter: React.FC = () => {
   // const { timezone } = useCurrentTimezone();
-  console.log('updated components')
+  console.log("updated components");
   const element = useRoutes(routes);
   return <>{element}</>;
 };
 
-export default AppRouter; 
+export default AppRouter;

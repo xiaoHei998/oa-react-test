@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -10,19 +10,16 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {
@@ -152,22 +149,40 @@ const data = {
       icon: Map,
     },
   ],
-}
-
+};
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const tnavMain = [
+    {
+      title: "Playground",
+      url: "/login",
+      items: [
+        {
+          title: "History",
+          url: "#",
+        },
+        {
+          title: "Starred",
+          url: "#",
+        },
+        {
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+  ];
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        {/* <TeamSwitcher teams={data.teams} /> */}
+        <h2 className=" text-[20px] font-bold"> this is a test</h2>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={tnavMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
-  )
+  );
 }

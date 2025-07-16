@@ -12,12 +12,12 @@ export const CurrentTimezoneContext = createContext<ICurrentTimezoneContext>({
 
 export const CurrentTimezoneProvider = ({
   children,
-  initalTimezone,
+  initialTimezone,
 }: {
   children: React.ReactNode;
-  initalTimezone?: string;
+  initialTimezone?: string;
 }) => {
-  const [timezone, setTimezone] = useState(initalTimezone ?? '');
+  const [timezone, setTimezone] = useState(initialTimezone ?? '');
 
   return (
     <CurrentTimezoneContext.Provider

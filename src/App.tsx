@@ -35,14 +35,14 @@ function App() {
     }
   }, []);
 
-  const initalTimezone =
+  const initialTimezone =
     JSON.parse(localStorage.getItem("signin-staff-base-info") || "{}")
       ?.timezone || "";
 
   return (
     <>
       <I18nextProvider i18n={i18n} defaultNS={'translation'}>
-        <CurrentTimezoneProvider initalTimezone={initalTimezone}>
+        <CurrentTimezoneProvider initialTimezone={initialTimezone}>
           <AppRouter />
         </CurrentTimezoneProvider>
       </I18nextProvider>

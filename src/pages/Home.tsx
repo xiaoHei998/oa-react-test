@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import pluginTimezone from "dayjs/plugin/timezone";
 import { useCurrentTimezone } from "../context/currentTimezoneContext";
+import { Button } from "@/components/ui/button";
 const formatNowDateTimeByTimeZone = (
   timezone: string,
   timestamp: number,
@@ -24,7 +25,7 @@ const formatNowDateTimeByTimeZone = (
 
 const Home: React.FC = () => {
   const { timezone, setTimezone } = useCurrentTimezone();
-  console.log('Home--updated')
+  console.log("Home--updated");
   const [options, setOptions] = useState<
     {
       value: string;
@@ -127,6 +128,7 @@ const Home: React.FC = () => {
           );
         })}
       </ul>
+      <Button className="bg-red-500 hover:bg-red-600" onClick={() => console.log("click")}>Click me</Button>
     </div>
   );
 };

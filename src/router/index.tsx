@@ -25,16 +25,16 @@ const routes = [
   {
     path: '/dashboard',
     element: lazyLoad(() => import('../pages/Dashboard')),
-    children: [
-      {
-        path: 'profile',
-        element: lazyLoad(() => import('../pages/Profile')),
-      },
-      {
-        path: 'settings',
-        element: lazyLoad(() => import('../pages/Settings')),
-      },
-    ],
+    // children: [
+    //   {
+    //     path: 'profile',
+    //     element: lazyLoad(() => import('../pages/Profile')),
+    //   },
+    //   {
+    //     path: 'settings',
+    //     element: lazyLoad(() => import('../pages/Settings')),
+    //   },
+    // ],
   },
 ];
 

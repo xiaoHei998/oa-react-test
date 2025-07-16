@@ -30,6 +30,9 @@ function App() {
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      throw new Error("test error");
+    }, 6000);
     if (!localStorage.getItem("signin-staff-base-info")) {
       onSignIn();
     }
@@ -41,7 +44,7 @@ function App() {
 
   return (
     <>
-      <I18nextProvider i18n={i18n} defaultNS={'translation'}>
+      <I18nextProvider i18n={i18n} defaultNS={"translation"}>
         <CurrentTimezoneProvider initialTimezone={initialTimezone}>
           <AppRouter />
         </CurrentTimezoneProvider>

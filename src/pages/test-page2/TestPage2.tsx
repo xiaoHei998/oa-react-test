@@ -1,4 +1,9 @@
+import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 
 export default function TestPage2() {
-  return <div>TestPage2</div>;
+  return (
+    <div>
+      <ChartAreaInteractive />
+    </div>
+  );
 }

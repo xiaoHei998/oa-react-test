@@ -4,7 +4,7 @@ const Text = () => {
   console.log("Text--updated");
   const { t } = useTranslation();
 
-  return <div>{t('test.name')}</div>;
+  return <div>{t("test.name")}</div>;
 };
 const Father = ({ children }: { children: React.ReactNode }) => {
   console.log("About--updated");
@@ -21,8 +21,20 @@ const About: React.FC = () => {
   return (
     <div>
       <h1>{t("key")}</h1>
-      <h1 onClick={() => {i18n.changeLanguage('en')}}>About Page</h1>
-      <p onClick={() => {i18n.changeLanguage('zh')}}>This is the About page. </p>
+      <h1
+        onClick={() => {
+          i18n.changeLanguage("en");
+        }}
+      >
+        About Page
+      </h1>
+      <p
+        onClick={() => {
+          i18n.changeLanguage("zh");
+        }}
+      >
+        This is the About page.{" "}
+      </p>
 
       <Father>
         <Text />

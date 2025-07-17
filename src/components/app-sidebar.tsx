@@ -20,6 +20,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import { permissionRoutes, type RouteNode } from "@/router/permission-router";
 
 // This is sample data.
 const data = {
@@ -150,32 +151,61 @@ const data = {
     },
   ],
 };
+
+interface SidebarItem {
+  title: string;
+  url: string;
+  items?: SidebarItem[];
+}
+
+// 将路由树转换为侧边栏导航格式
+export function routesToSidebar(routes: RouteNode[]): SidebarItem[] {
+  const sidebarItems: SidebarItem[] = [];
+
+  function convertNode(node: RouteNode): SidebarItem | null {
+    const sidebarItem: SidebarItem = {
+      title: node.meta?.title || node.path,
+      url: node.children ? "" : `/${node.path}`,
+    };
+
+    // 如果有子节点，递归处理
+    if (node.children && node.children.length > 0) {
+      const childItems: SidebarItem[] = [];
+      for (const child of node.children) {
+        const childItem = convertNode(child);
+        if (childItem) {
+          childItems.push(childItem);
+        }
+      }
+      if (childItems.length > 0) {
+        sidebarItem.items = childItems;
+      }
+    }
+
+    // 只返回有 element 或有子项的节点
+    if (node.element || (sidebarItem.items && sidebarItem.items.length > 0)) {
+      return sidebarItem;
+    }
+    return null;
+  }
+
+  for (const route of routes) {
+    const sidebarItem = convertNode(route);
+    if (sidebarItem) {
+      sidebarItems.push(sidebarItem);
+    }
+  }
+  return sidebarItems;
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const tnavMain = [
-    {
-      title: "Playground",
-      url: "/login",
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-  ];
+  const tnavMain = routesToSidebar(permissionRoutes);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         {/* <TeamSwitcher teams={data.teams} /> */}
-        <h2 className=" text-[20px] font-bold"> this is a test</h2>
+        <h2 className=" text-[20px] font-bold"> TT</h2>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={tnavMain} />

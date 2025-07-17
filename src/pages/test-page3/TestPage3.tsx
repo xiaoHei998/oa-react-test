@@ -1,4 +1,10 @@
+import { DataTable } from "@/components/data-table";
+import data from "../data.json";
 
 export default function TestPage3() {
-  return <div>TestPage3</div>;
+  return (
+    <div>
+      <DataTable data={data} />
+    </div>
+  );
 }

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Axios } from "../utils/request";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import pluginTimezone from "dayjs/plugin/timezone";
 import { useCurrentTimezone } from "../context/currentTimezoneContext";
-import { Button } from "@/components/ui/button";
 const formatNowDateTimeByTimeZone = (
   timezone: string,
   timestamp: number,
@@ -23,39 +21,45 @@ const formatNowDateTimeByTimeZone = (
     .format(formatString ? formatString : "MM-DD HH:mm");
 };
 
+const TimeZonelist = [
+  {
+    id: 0,
+    value: "UTC",
+    name: "Greenwich Mean Time (GMT)",
+    description: "格林威治标准时间",
+  },
+  {
+    id: 0,
+    value: "Asia/Shanghai",
+    name: "Asia/Shanghai (CST)",
+    description: "中国标准时间",
+  },
+  {
+    id: 0,
+    value: "US/Pacific",
+    name: "US/Pacific Daylight Time (PDT)",
+    description: "太平洋夏令时间",
+  },
+  {
+    id: 0,
+    value: "Pacific/Pitcairn",
+    name: "US/Pacific Standard Time (PST)",
+    description: "太平洋标准时间",
+  },
+  {
+    id: 0,
+    value: "US/Eastern",
+    name: "US/Eastern Daylight Time (EDT)",
+    description: "美国东部时间",
+  },
+];
+
 const Home: React.FC = () => {
   const { timezone, setTimezone } = useCurrentTimezone();
   console.log("Home--updated");
-  const [options, setOptions] = useState<
-    {
-      value: string;
-      label: string;
-      description: string;
-    }[]
-  >([]);
+  const [options] = useState(TimeZonelist);
   const timezoneLabel =
-    options.find((item) => item.value === timezone)?.label || "";
-  const getOptions = async () => {
-    const { data } = await Axios.get("/options/timezones");
-    setOptions(
-      data.list.map((item: Record<string, string>) => {
-        return {
-          value: item.value,
-          label: item.name,
-          description: item?.description,
-        };
-      })
-    );
-  };
-  const getDetails = async () => {
-    try {
-      const { data } = await Axios.get("/profile");
-      setTimezone(data.timezone.value);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+    options.find((item) => item.value === timezone)?.name || "";
   const getNowDateTime = (timezone: string) => {
     if (!timezone) {
       return "";
@@ -66,50 +70,10 @@ const Home: React.FC = () => {
 
   const handleTimeZoneChange = async function (params: { key: string }) {
     setTimezone(params.key);
-    try {
-      const { data } = await Axios.put("/profile", {
-        timezone: params.key,
-      });
-      if (data.code === 0) {
-        const baseInfo = JSON.parse(
-          localStorage.getItem("signin-staff-base-info") as string
-        );
-
-        localStorage.setItem(
-          "signin-staff-base-info",
-          JSON.stringify({
-            staff_id: baseInfo.staff_id,
-            name: baseInfo.name,
-            role: baseInfo.role,
-            timezone: params.key,
-          })
-        );
-      }
-    } catch (error) {
-      console.error(String(error));
-    }
+    localStorage.setItem("timezone", params.key);
   };
 
-  useEffect(() => {
-    const init = async () => {
-      await getOptions();
-      await getDetails();
-      // const timer = setInterval(() => {
-      //   // getDetails();
-      //   setTimezone(
-      //     [
-      //       "Asia/Shanghai",
-      //       "UTC",
-      //       "US/Pacific",
-      //       "Pacific/Pitcairn",
-      //       "US/Eastern",
-      //     ][Math.floor(Math.random() * 5)]
-      //   );
-      // }, 3000);
-      // return () => clearInterval(timer);
-    };
-    init();
-  }, []);
+
   return (
     <div>
       <h1>Home Page</h1>
@@ -123,12 +87,11 @@ const Home: React.FC = () => {
               onClick={() => handleTimeZoneChange({ key: item.value })}
               key={item.value}
             >
-              {item.label} {getNowDateTime(item.value)}
+              {item.name} {getNowDateTime(item.value)}
             </li>
           );
         })}
       </ul>
-      <Button className="bg-red-500 hover:bg-red-600" onClick={() => console.log("click")}>Click me</Button>
     </div>
   );
 };

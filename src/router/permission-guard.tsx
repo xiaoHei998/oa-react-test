@@ -10,7 +10,6 @@ export default function Guard({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!localStorage.getItem("isLogin")) {
-    // User is signed in, render children
     return <></>;
   }
 

@@ -1,18 +1,17 @@
-import React, { lazy, Suspense } from "react";
-import { useRoutes } from "react-router-dom";
+import React, { Suspense, type LazyExoticComponent } from "react";
+import { useRoutes, type RouteObject } from "react-router-dom";
 import TestLogin from "@/pages/test-login/TestLogin";
 import Dashboard from "@/pages/Dashboard";
 import Guard from "./permission-guard";
 import NotFound from "@/pages/404";
-import { permissionRoutes } from "./permission-router";
-// import { useCurrentTimezone } from '../context/currentTimezoneContext';
+import { flattenRoutes, permissionRoutes } from "./permission-router";
 
 // 通用懒加载包装
 function lazyLoad(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  importFn: () => Promise<{ default: React.ComponentType<any> }>
+  cpm: LazyExoticComponent<() => JSX.Element>
 ): React.ReactNode {
-  const Component = lazy(importFn);
+  const Component = cpm;
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Component />
@@ -39,10 +38,12 @@ export const routes = [
       title: "Dashboard",
     },
     children: [
-      ...permissionRoutes.map((route) => {
+      ...flattenRoutes(permissionRoutes).map((route) => {
         return {
           ...route,
-          element: lazyLoad(route.element),
+          element: lazyLoad(
+            route.element as LazyExoticComponent<() => JSX.Element>
+          ),
         };
       }),
     ],
@@ -54,9 +55,7 @@ export const routes = [
 ];
 
 const AppRouter: React.FC = () => {
-  // const { timezone } = useCurrentTimezone();
-  console.log("updated components");
-  const element = useRoutes(routes);
+  const element = useRoutes(routes as RouteObject[]);
   return <>{element}</>;
 };
 

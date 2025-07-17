@@ -38,9 +38,7 @@ function App() {
     }
   }, []);
 
-  const initialTimezone =
-    JSON.parse(localStorage.getItem("signin-staff-base-info") || "{}")
-      ?.timezone || "";
+  const initialTimezone = localStorage.getItem("timezone") || "";
 
   return (
     <>

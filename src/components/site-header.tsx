@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import pluginTimezone from "dayjs/plugin/timezone";
-import { useCurrentTimezone } from "@/context/currentTimezoneContext";
+import { useCurrentTimezone } from "@/app/context/currentTimezoneContext";
 
 const formatNowDateTimeByTimeZone = (
   timezone: string,

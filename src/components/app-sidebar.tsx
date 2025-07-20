@@ -20,7 +20,9 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { permissionRoutes, type RouteNode } from "@/router/permission-router";
+// import { permissionRoutes, type RouteNode } from "@/router/permission-router";
+import { default as dashboardRoutes } from '@/app/dashboard/routes'
+import type { DashboardRoutes } from "@/app/dashboard/routes/types";
 
 // This is sample data.
 const data = {
@@ -159,10 +161,10 @@ interface SidebarItem {
 }
 
 // 将路由树转换为侧边栏导航格式
-export function routesToSidebar(routes: RouteNode[]): SidebarItem[] {
+export function routesToSidebar(routes: DashboardRoutes[]): SidebarItem[] {
   const sidebarItems: SidebarItem[] = [];
 
-  function convertNode(node: RouteNode): SidebarItem | null {
+  function convertNode(node: DashboardRoutes): SidebarItem | null {
     const sidebarItem: SidebarItem = {
       title: node.meta?.title || node.path,
       url: node.children ? "" : `/${node.path}`,
@@ -199,7 +201,7 @@ export function routesToSidebar(routes: RouteNode[]): SidebarItem[] {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const tnavMain = routesToSidebar(permissionRoutes);
+  const tnavMain = routesToSidebar(dashboardRoutes);
 
   return (
     <Sidebar collapsible="icon" {...props}>

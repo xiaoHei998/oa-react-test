@@ -1,4 +1,5 @@
-[
+import { DataTable } from "@/components/data-table";
+const data = [
   {
     "id": 1,
     "header": "Cover page",
@@ -612,3 +613,11 @@
     "reviewer": "Assign reviewer"
   }
 ]
+
+export default function TestPage3() {
+  return (
+    <div>
+      <DataTable data={data} />
+    </div>
+  );
+}

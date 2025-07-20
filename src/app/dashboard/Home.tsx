@@ -54,7 +54,7 @@ const TimeZonelist = [
   },
 ];
 
-const Home: React.FC = () => {
+const Home = () => {
   const { timezone, setTimezone } = useCurrentTimezone();
   console.log("Home--updated");
   const [options] = useState(TimeZonelist);
